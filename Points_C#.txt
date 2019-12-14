@@ -1,0 +1,94 @@
+=> Hello World!
+   Input/Output: Console.WriteLine()/Console.ReadLine()
+=> Data Types:
+   => bool, int(based on size), string(immutable), char, float(may or maynot contain decimal)
+=> Variables:
+   <visibility> <data_type> <name> = <value>
+=> if statement: 
+=> switch statement: 
+   => switch(choice): Any simple type like int, string,...
+=> Loops
+   => while
+   => do..while..
+   => for
+   => foreach
+      foreach(string name in list)
+=> Functions
+   => function parameters: 
+      => ref modifier
+      => out modifier
+   => params modifier: arbitrary number of parameters
+=> Arrays
+   => string[] names = new string[2];
+
+=> Class
+    class Car
+    {
+        private string color;
+
+        public Car(string color)
+        {
+            this.color = color;
+        }
+	public string Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
+    }
+=> Properties:
+   => Control accessibility of class variables using get/set
+   => ReadOnly: get, WriteOnly: set, ReadWrite: get/set
+=> Constructor/Destructor:
+   => Constructor: Never reurns anything, So it's aspecial method without return-type.
+   => Destructor:
+      C# is garbage-collected but there may be times where we need some manual cleanup.
+      Destructor is a special method, used to cleanup the resource when object is disposed.
+      ~Car() 
+      {
+    	Console.WriteLine("Out..");
+      }
+=> Method-Overloading:
+   => Default-Parameter introduced in C# version-4.0
+   => 
+=> Visibility:
+   public: Enum and interfaces are publicly-visible.
+   protected: same as Java
+   internal: within same project only
+   protected internal: the same as internal, except that also classes which inherits 
+                       from this class can reach it members, even from another project. 
+   private: same as Java
+=> Static-Members: same as Java (using static keyword)
+=> Inheritance: same as JAVA
+   => It uses colon(:) operator instead on extends
+=> Abstract-class:
+   => virtual, override and new 
+=> Interfaces:
+=> Enumerations:
+   public enum Days { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday }
+=> Exception-Handling: Same as Java
+=> Structs: Same as class
+   => It's a lightweight alternative of the class
+=> Debugging, Breakpoint, Stepping the code
+
+=> Important-Classes:
+   => XmlReader:
+   => XmlDocument:
+   => XmlNode:
+   => XPath:
+   => XmlWriter:
+
+=> C#3.0
+   => Automatic Properties:
+   => Object-Initializer:
+   => Collection-Initializers:
+   => Extensin-methods;
+   => Files/Directory:
+   => Reflections:
+   => Type:
+
+
+   
+
+
+      

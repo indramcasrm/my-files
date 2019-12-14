@@ -1,0 +1,138 @@
+Operator :
+-------------------------
+=> Logical -> and/or (not &/|)
+
+
+
+
+Conditional and iteration :
+----------------------------
+=> if/elif/else
+=> for
+   for a in range(1, 11): #print 1 to 10
+   for num in num_list:   #traverse list
+   range(start,end,step): #step-increment
+=> while
+   #initialize
+   while i < 10:
+      #increment, i+=1
+   ##### skip iteration using continue
+   i = 0
+   while i < 10:
+      i += 2
+      if i==4:
+	 continue   # next 'print' statement is skipped when i equals 4.
+      print i
+
+
+
+
+LIST :
+-------------------------
+=> Index-based
+=> Mixed-up data type, ['a', 'b', 1, 2,]
+=> Initialization is done by [1, 2, 3, 4]
+=> [-ve] index, accesss elements from right - num_list[-2]
+=> List-slice by num_list[1:3]
+
+
+TUPLE :
+-------------------------
+=> Similar to list but imutable   
+=> Like list/string, tuple is zero-index based
+=> Accessing element, same as index-based list and also support slice
+   => tpl[index], e.g. tpl[1], tpl[-2], tpl[2:3]
+=> Modification is done by re-assigning elements in new tuple
+   => tpl1 = ('a', 'b', 'c')
+   => tpl2 = 1, 2, 3, 4, 5
+   => tpl3 = ('a_',) + tpl1[1:] #replace 1st element and create a new tpl3
+=> Deletion of element is not possible, but tuple may delete
+   => del tpl[0]     #ERROR
+   => del tpl        #DELETE the tuple 
+
+
+DICTIONARY :
+-------------------------
+=> key/value pair, enclosed within curly braces {}
+=> similar to java hashtable/hashmap
+=> a = {'a':'apple', 'b':'ball'} #creation with values
+=> type(a)                       #return data-type e.g.<type 'dict'>
+=> a = dict()                    #blank dictionary-creation
+=> a['a1'] = 'apple1'            #adding item as key-value pair
+=> a['a2'] = 'apple2'            #adding item as key-value pair
+=> a['a1'] = 'apple_'            #chaging value
+=> a                             #print, {'a1':'apple_', 'a2':'apple2'}
+=> tpl = [('a', 'apple'), ('b', 'ball')]
+   dict_from_tpl = dict(tpl)     #dict from a tuple
+=> Accessing keys, values and 
+   => dct[key], e.g. a['a']      #getting value of the key
+   => dct.get['a'], a.get['a']   #getting value of the key
+   => dct.has_key['a'], True/Err #check, key is exist else ERROR
+   => dct.keys()                 #list of all keys
+   => dct.values()               #list of all values
+   => dct.items()                #tuple of all key/value pair           
+=> Deletion
+   => del dct['a']               #delete, key 'a'
+   => dct.clear()                #empty dictionary
+   => del dct                    #delete the dictionary
+
+
+CLASS :
+-------------------------   
+=> Class-Structure
+class Shape:                     #class-name
+   def _init_(self, len, wid):   #constructor, using double-underscore
+      self.length = len          #instance-variable
+      self.width = wid         
+   def cal_area(self):           #method, always self as first arg
+      return self.length*self.width
+   def print_area(self):         #another method
+      print "Area = "+str(self.cal_area)
+
+=> Object-Creation
+shape = Shape(4, 3)              #object-creation
+shape.cal_area()                 #method-call, no-arg is needed, SELF
+shape.print_area()
+shape.length                     #access instance-var
+
+
+INHERITANCE :
+-------------------------  
+class Square(Shape):                   #inherited-class inside ()
+   def _init_(self, side):       
+      Shape._init_(self, side, side)   #call parent-class constructor
+   def cal_area(self):           
+      return Shape.cal_area(self)      #call parent-class method
+   def print_area(self):
+      print "Area-"+str(self.cal_area) #override parent-class method
+
+
+EXCEPTION-HANDLING :
+------------------------- 
+=> Two ways to handle unexpected error
+   => Exception-Handling
+   => Assertion
+=> try....except....else         #HANDLE-EXCEPTION
+=> except(Exception1[, Exception2[,...ExceptionN]]]):
+   try:
+      #open a file               #statement to raise the exception
+   except [ExceptionType]:       #ExceptionType is optional,   
+      #code if exception         #execute if excception
+   except...
+   ..................            #except can be more than one   
+   else:
+      #cose after try            #execute if try-block sucess
+
+=> finally #use with try block   #ALWAYS EXECUTE same as JAVA      
+
+=> raise                         #RAISE-EXCEPTION
+   raise [Exception [, args [, traceback]]]
+   => args and traceback is optional, default None and 
+
+=> user-defined excception       #USER-EXCEPTION by derived-class   
+
+
+
+
+MULTI-THREAD :
+------------------------- 

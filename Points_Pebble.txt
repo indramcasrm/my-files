@@ -1,0 +1,12 @@
+==========================================================
+VIBRATION - 
+---------
+ send_int(KEY_BUTTON_EVENT, BUTTON_EVENT_UP);
+  Viberation
+  uint32_t segments[] = {100, 200, 300};
+  VibePattern pattern = {
+    .durations = segments,
+    .num_segments = ARRAY_LENGTH(segments),
+  };
+  vibes_enqueue_custom_pattern(pattern);
+==========================================================

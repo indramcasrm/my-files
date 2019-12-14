@@ -1,0 +1,158 @@
+- Build Tool
+- Project Management Tool
+
+Problems:
+- Multiple Jar(Spring, Hibernate, etc) at compile time.
+- Dependencies (One jar dependents on another, Versions mismatch)
+- Project Structure
+- Build, Publish and Deploy
+
+Setup
+- Download from Apache Project - http://maven.apache.org
+- M2_HOME : Extraction Path
+- PATH: M2_HOME/Bin
+
+Test
+- mvn --version
+
+Repository
+- 
+
+mkdir myapp
+cd myapp/
+mvn archtype:generate
+Choose a number 106(default) - Creation of blank project with all dependencies
+Choose Version 6(default) - default is 1.1
+groupId: org.indra.mvn(package-name)
+artifactId: MavenTestApp(jar name)
+Version: 1.0-SNAPSHOT
+Y
+BUILD SUCCESS
+cd MavenTestApp
+
+<dependencies>
+ <dependency>
+  <groupId>
+  <artifactId>
+  <version>
+  <scope>
+ </dependency>
+</dependencies>
+
+- Compile 
+ - Go to the dir of pom.xml 
+ - mvn compile (download all dependencies)
+- Package 
+ - mvn package
+ - created and packaged as JAR in target (running after junit if test is under src/test)
+- Execute
+ - java -jar target-jar-name
+
+
+
+=> HOW
+   - Maven Repository
+     1. Archtype info - Project related info (mvn generate command - created directory structure and pom.xml)
+     2. Dependency Info - all dependencies 
+
+- Create source code template
+- Build and package the applcation 
+- Generate archtype 
+  - archtype: kind of projects
+  - groupid: jar-name
+  - artifactid: jar/war
+  - version: 
+  - package:
+  - pom.xml
+- groupid, artifacid, version for repo
+- properties src encoding
+- dependencies (groupid, artifactid, version, [scope])
+- scope (building and packaging)
+
+- INTERNAL REPO (local repo in system)
+- IF AVL_IN_LOCAL
+    download local repo
+  ELSE
+    download from public repo
+
+=> MAVEN BUILD
+   - After Development
+   - In ANT, specify all the dir/classes
+   = Build Lifecycle
+     - Different PHASES (compile, test, package)
+     - Default phases
+     - compile from main DIR
+     - test from test DIR
+     - automatic do last phase
+     1. validate (not explicit, order, config, )
+     2. compile
+     3. test
+     4. package
+     5. install (install in local repo. it's maven specific not like web deploy to server)
+     6. deploy (not to app-server. deploy to remote repo)
+=> pom.xml DIR
+   1. mvn phase-name (mvn compile)
+   2. 
+
+=>5 Adding dependency
+- clean is a phase
+- HelloWorld Main
+- Add slf4j logging
+- import the dependency
+- clean (build failed)
+- add depecdency for slf4j in pom.xml
+- GAV(Group-Artifact-Version)
+- SonaTYpe for maven
+- DEFAULT SCOPE IS COMPILE (IF SCOPE NOT SPECIFIED)
+
+=> 6. MAVEN WB APP
+- mvn generate 
+- archtype 109 default - 269 for (j2ee1.4)
+- GAV 
+- package-name
+- Now packaging in pom.xml is war
+  <packaging>war</packaging>
+- pom.xml
+  servlet
+  jsp
+  junit
+- build node
+  <build>
+     <plugins>
+	GAV //compiler plugin
+	<configuration>
+	  <source>
+          <target>
+	<configuration>
+     <plugins>
+  <build>
+- WHY compiler plugin in pom.xml?
+  - compiler in maven is a plugin
+  - default compiler
+  - if cfg like src/tgt is updated
+- mvn compile and package
+- scope is run/compile/provided
+
+=>7.PLUGINS
+- for generics, src/tgt should be 1.5
+
+=> JETTY plugins
+   - add inside build node
+   - mvn jetty:run (plugin-name:goal)
+   - checking class changes
+     <build>
+     <plugins>
+       <configurations>
+   	<scanIntervalSeconds>10</scanIntervalSeconds>
+     </configurations>
+
+=> ecliplse
+   - Maven having modulat architecture
+   - mvn eclipse:eclipse
+   - M2_REPO setup if any error
+   - Install m2eclipse plugin
+ 
+	 
+=========================
+SKIP TEST - mvn clean install -Dmaven.test.skip=true
+

@@ -1,0 +1,143 @@
+JSR - Java Specification Request
+
+SERVLET
+----------------------------------------------------------------------
+=> Compenent-based, plateform-independent method to build web apps
+=> Program runs on web/application server and works as a middle-layer.
+=> Package:
+   1. javax.http
+   2. javax.http..servlet
+=> Life-cycle:
+   1. init() - only once
+   2. serrvice() - each time   
+   3. destroy() - only once
+   4. Garbage collected by Garbage-Collector
+=> Methods:
+   1. doGet()
+   2. doPost()
+   3. getParameter() - String
+   4. getParameterNames() - Enumeration, hasMoreElements(), nextElement()
+   5. getParameterValues() - Enumeration
+   
+HTTP-Request
+----------------------------------------------------------------------
+=> Headers: Accept, Accept-Encoding, Cookie, Host, Connection, etc..
+=> Methods: To read http-header
+   1. Cookie[] getCookies()
+   2. Enumeration getAttributeNames()
+   3. Enumeration getHeaderNames()
+   4. Enumeration getParameterNames()
+   5. HttpSession getSession()
+   6. ServletInputStream getInputStream()
+   7. String getContentType()
+   8. String getContextPath()
+   9. String getMethod() ..............so many methods
+   
+HTTP-Response
+----------------------------------------------------------------------
+=> Headers: Allow, Connection, Location, Refresh, etc........
+=> Methods: To set http-response
+   1. String encodeRedirectURL(String url)
+   2. String encodeURL(String url)
+   3. boolean containsHeader(String name)
+   4. void addCookie(Cookie cookie)
+   5. void setContentType(String type)
+   6. void addHeader(String name, String value)
+   7. void sendRedirect(String location)
+   8. void setIntHeader("Refresh", 5) - Refresh every 5s
+   8. void setStatus(int sc) ...................so many methods
+   
+HTTP-Status
+----------------------------------------------------------------------   
+=> HTTP-request/response contains status-code, message and description
+=> 200 -> OK -> Request is OK
+   400 -> Bad Request -> Server didn't understand the request
+   100, 101, 200-206, 300-307, 400-417, 500-505
+=> Methods:
+   1. public void setStatus ( int statusCode )
+   2. public void sendRedirect(String url)
+   3. public void sendError(int code, String message) 
+
+FILTER
+----------------------------------------------------------------------
+=> Intercept request from client before they access back-end resource
+=> Manipulate response from server before they sent back to the client
+=> Types:
+   1. Authentication filter
+   2. Data-compression filter
+   3. Encryption filter
+   4. Image-conversion filter
+   5. Logging & Auditing filter
+   6. XSLT filter to transfor XML
+   7. Tokenizing filter
+=> Methods:
+   1. doFilter(ServletRequest, ServletResponse, FilterChaing) - called each time
+   2. init(FilterConfig config)
+   3. destroy()
+=> Configuration:
+   <filter>
+		<filter-name>SampleFilter</filter-name>
+		<filter-class>com.indra.servlet.SampleFilter</filter-class>
+		<init-param>
+			<param-name>test-filter</param-name>
+			<param-value>Initializing TestFilter</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>SampleFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+=> Filter order determines, based on the order in web.xml 	
+	
+ERRORS/EXCEPTION
+----------------------------------------------------------------------
+=> When servlet throws an exception, web-server searches the web.xml
+=> Attributes
+   1. javax.servlet.error.status_code
+   2. javax.servlet.error.exception_type
+   3. javax.servlet.error.exception
+   4. javax.servlet.error.message
+   5. javax.servlet.error.request_uri
+   6. javax.servlet.error.servlet_name
+=> Configuration 
+   <servlet>
+		<servlet-name>UniqueName</servlet_name>
+		<servlet-class>PackageName</servlet-class>
+   </servlet>
+   <servlet-mapping>
+		<servlet-name>UniqueName</servlet-name>
+		<url-pattern>/*</url-pattern>
+   </servlet-mapping>
+   <error-page>
+		<exception-type>ExceptionName</exception-type>
+		<location>/error</location>
+   </error-page>
+   <error-page>
+		<error-code>StatusCode</error-code>
+		<location>/error</location>
+   </error-page>   
+   For Generic-Exception: java.lang.Throwable
+
+COOKIES
+----------------------------------------------------------------------
+=> Cookies are text files stores on client-machine for tracking-purpose.
+   Java-Servlet, supports cookies
+=> Steps:
+   1. Server scripts sends a set of information to the client browser.
+   2. Browser stores this information in text file for future use.
+   3. Later, Browser sends this information to the server. Server reads 
+      this information to identify the user.
+=> Costructor: To create the cookie
+   1. Cookie cookie = new Cookie(String name, String value)
+      Note: Following character doesn't allow in name/value
+            white-space [ ] ( ) = , " / ? @ : ;
+=> Methods:
+   1. public void setDomain(String pattern)
+   2. public String getDomain()
+   3. public void setMaxAge(int expiry) .........   
+    
+SESSION-TRACKING
+----------------------------------------------------------------------
+=> HTTP is a stateless protocol. So web-server never keeps the record
+   of the client who had make the request.
+   	  

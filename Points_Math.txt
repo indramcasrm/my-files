@@ -1,0 +1,15 @@
+SETS:
+----
+=> Collection of objects, which may be anything but in mathematical terms we use numbers.
+=> ZFC (Zermelo and Frawnkel) axioms and "the axiom of choice"
+=> Sets are determined by its elements, x € X (x belongs to X)
+   X = {1, 2, 3, 4, 5}
+=> NUMBERS:
+   -------
+   => N: Natural, N
+
+
+NUMBER:
+------
+=> God created the integers and the rest is the work of man. (algebraist Leopold
+   Kronecker, in an after-dinner speech at a conference, Berlin, 1886)

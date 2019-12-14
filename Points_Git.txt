@@ -1,0 +1,55 @@
+org.eclipse.equinox.event
+org.eclipse.ui.trace
+
+https://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.xtext.doc%2Fcontents%2F030-generator.html
+
+$ scp -p -P 29418 indrajeet@10.47.1.33:bin/gerrit-cherry-pick ~/bin/
+curl -Lo ~/bin/gerrit-cherry-pick http://10.47.1.33/tools/bin/gerrit-cherry-pick
+curl -Lo .git/hooks/commit-msg http://10.47.1.33/tools/hooks/commit-msg
+
+rm -rf .git/MERGE*
+
+sudo docker ps -a
+
+sudo docker exec -it b7b351735d23 bash 
+
+
+=> GIT CLONE
+   git clone -c core.longpaths=true ssh://indrajeet@10.47.1.33:29418/TEL_AUTOSAR_IP && scp -p -P 29418 indrajeet@10.47.1.33:hooks/commit-msg TEL_AUTOSAR_IP/.git/hooks/
+
+=> Commands
+   Branch List -> git branch -a
+   Config -> git config --system core.longpaths true
+   Index-Update -> 
+   
+
+=> Git Config file
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+	longpaths = true
+[remote "origin"]
+	url = ssh://indrajeet@10.47.1.33:29418/TEL_AUTOSAR_IP
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	fetch = refs/notes/*:refs/notes/*
+	pushurl = ssh://indrajeet@10.47.1.33:29418/TEL_AUTOSAR_IP
+	push = HEAD:refs/for/master
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[branch "Tool_Dev_Adaptive"]
+	remote = origin
+	merge = refs/heads/Tool_Dev_Adaptive
+[user]
+	email = indrajeet@tataelxsi.co.in
+	name = Indrajeet Kumar Singh
+[gui]
+	wmstate = zoomed
+	geometry = 893x435+78+78 175 196
+[gerrit]
+	createchangeid = true
+ 

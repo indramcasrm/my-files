@@ -1,0 +1,6 @@
+Logging API:
+1. Log4j - 
+   Developed in 1999 by Apache Software Foundation which is based on a project developed by IBM in late 1990s.
+   Widly used in open source community including some big projects like JBoss and Hibernate.
+2. JUL - java.util.logging package
+
