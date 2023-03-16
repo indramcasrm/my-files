@@ -1,0 +1,15 @@
+Windows Commands - 
+--------------------------------------------
+1. Write cmd logs to a file
+   c:\> CMD > file_name 
+2. Create environment variable
+   c:\> SET JAVA_HOME = folder_path
+3. Create Global Variable
+   c:\> SETX /m variable = path
+
+Android Commands
+--------------------------------------------
+1. Install using ADB (Under ANDROID_SDK/Platform-tools/adb.exe)
+   c:\> adb install apk_name
+2. Uninstall Android Application 
+   c:\> adb uninstall package_name
