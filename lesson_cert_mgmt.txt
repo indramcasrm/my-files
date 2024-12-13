@@ -1,0 +1,49 @@
+
+================================================================================================================== KEYTOOL
+=> Read/Write cacerts
+	$ keytool -list -keystore ./cacerts
+	$ keytool -list -keystore "C:\Program Files (x86)\IBM\Rational\Synergy\7.2.2\jre\lib\security\cacerts"
+	$ ./keytool -list -keystore /IBM/JTS-7.0.2/server/jre/lib/security/cacerts
+	$ ../../bin/keytool -v -list -keystore ./cacerts | grep 'Alias name:'
+	
+	$ keytool -delete -alias srsdc308148l201 -keystore ../lib/security/cacerts
+
+	------------
+	C:\j2sdk1.4.2_04\jre\bin>keytool -list -keystore ./cacerts
+	Enter keystore password:  changeit
+
+	Keystore type: jks
+	Keystore provider: SUN
+
+	Your keystore contains 15 entries
+	---------------	
+	Use sort:
+
+	user@host1$ keytool -list -keystore cacerts | sort > certs1
+	user@host2$ keytool -list -keystore cacerts | sort > certs2
+	then copy both files to a single host and diff:
+
+	diff certs1 certs2
+	---------------
+
+================================================================================================================== OPENSSL
+=> openssl
+	# View PEM				-	openssl x509 -in aaa_cert.pem -noout -text
+	# Convert CRT to PEM	-	openssl x509 -in server.crt -out server.der -outform DER
+								openssl x509 -in server.der -inform DER -out server.pem -outform PEM
+	# Convert PKCS7 to PEM	- 	openssl pkcs7 -in cert.p7b -inform DER -print_certs -out cert.pem
+	# Convert CER to CRT 	- 	openssl x509 -inform PEM -in certificate.cer -out certificate.crt
+	
+	# Read cert from host 	- 	openssl s_client -connect srsdc308148l201.tnext.loc:443
+	
+	
+
+
+
+
+==================================================================================================================
+
+C:\DEVELOPMENT\JDKs\IBM-JDK-8\bin>keytool -trustcacerts -keystore "c:\DEVELOPMENT\JDKs\IBM-JDK-8\jre\lib\security\cacerts" -storepass changeit -importcert -alias zscalar -file "C:\Users\482412\OneDrive - Alstom\Certificates\Zscaler Root CA.crt"
+
+
+==================================================================================================================

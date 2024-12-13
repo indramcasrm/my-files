@@ -1,0 +1,124 @@
+# Client-side SSL
+For excessively paranoid client authentication.
+
+Original: https://gist.github.com/mtigas/952344
+
+
+### Convert SSL certificate from CRT format to PEM
+    openssl x509 -in server.crt -out server.der -outform DER
+    openssl x509 -in server.der -inform DER -out server.pem -outform PEM
+
+### Converte PKCS7 to PEM
+    openssl pkcs7 -in cert.p7b -inform DER -print_certs -out cert.pem
+
+## Using self-signed certificate.
+### Create a Certificate Authority root (which represents this server)
+Organization & Common Name: Some human identifier for this server CA.
+
+    openssl genrsa -des3 -out ca.key 4096
+    openssl req -new -x509 -days 365 -key ca.key -out ca.crt
+
+
+### Create the Client Key and CSR
+Organization & Common Name = Person name
+
+    openssl genrsa -des3 -out client.key 4096
+    openssl req -new -key client.key -out client.csr
+    # self-signed
+    openssl x509 -req -days 365 -in client.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out client.crt
+
+#### Convert Client Key to PKCS
+So that it may be installed in most browsers.
+
+    openssl pkcs12 -export -clcerts -in client.crt -inkey client.key -out client.p12
+
+#### Convert Client Key to (combined) PEM
+Combines `client.crt` and `client.key` into a single PEM file for programs using openssl.
+
+    openssl pkcs12 -in client.p12 -out client.pem -clcerts
+
+### Install Client Key on client device (OS or browser)
+Use `client.p12`. Actual instructions vary.
+
+### Install CA cert on nginx
+So that the Web server knows to ask for (and validate) a user's Client Key
+against the internal CA certificate.
+
+    ssl_client_certificate /path/to/ca.crt;
+    ssl_verify_client optional; # or `on` if you require client key
+
+Configure nginx to pass the authentication data to the backend application:
+
+* [Client Side Certificate Auth in Nginx](http://blog.nategood.com/client-side-certificate-authentication-in-ngi), section “Passing to PHP.”
+* [SSL module documentation](http://wiki.nginx.org/NginxHttpSslModule)
+
+
+## Using CACert Keys
+* Get [client key from CACert](https://www.cacert.org/account.php?id=36)
+* Install client key in client device.
+* Install [CACert root certs](https://www.cacert.org/index.php?id=3) in server and client device.
+* Configure nginx, as above.
+
+
+
+    openssl req -new -newkey rsa:2048 -nodes -keyout teste.com.key -out teste.com.csr
+    openssl x509 -req -in teste.com.csr -signkey teste.com.key -out teste.com.crt
+    openssl pkcs12 -export -out teste.com.pfx -inkey teste.com.key -in teste.com.crt
+
+
+## NGINX conf
+
+	server {
+
+		listen 80;
+		server_name example.com;
+		return 301 https://example.com$request_uri;
+
+
+	}
+
+
+	server {
+
+		listen 443 ssl;
+
+		client_max_body_size 60M;
+		server_name example.com;
+
+		ssl_certificate /letsencrypt/live/example.com/fullchain.pem;
+		ssl_certificate_key /letsencrypt/live/example.com/privkey.pem;
+
+
+		ssl_protocols TLSv1.1 TLSv1.2;
+		ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK';
+		ssl_prefer_server_ciphers on;
+
+
+		# Cadeia de Certificados
+		ssl_client_certificate /etc/nginx/certificados/cadeia-certificados.pem;
+
+		# Valida a hierarquia ( https://stackoverflow.com/questions/8431528/nginx-ssl-certificate-authentication-signed-by-intermediate-ca-chain )
+		ssl_verify_depth 2;
+
+
+		# Certificados revogados
+		# ssl_crl /etc/nginx/certificados/ca.crl;
+		# Exige o certificad do cliente
+		ssl_verify_client on;
+
+
+		 location / {
+
+		  # Passa o certificado obtido em formato pem para a aplicação
+
+		  proxy_set_header X-Forwarded-Host $server_name;
+		  proxy_set_header X-Forwarded-Port 443;
+		  proxy_set_header X-Forwarded-Ssl on;
+		  # proxy_set_header X-SSL-CERT $ssl_client_cert;
+		  proxy_set_header X-SSL-CERT $ssl_client_escaped_cert;
+		  proxy_pass http://10.0.0.1:3000;
+        }
+
+
+
+	}

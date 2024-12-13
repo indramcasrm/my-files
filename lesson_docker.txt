@@ -1,0 +1,254 @@
+=> To Enable windows container
+   Enable-WindowsOptionalFeature -Online -FeatureName $("Microsoft-Hyper-V", "Containers") -All
+
+=> docker run hello-world ---> .docker check image in local system and pull from docker-hub and then run
+=> docker ps -a ---> list the container in your system]
+=> docker images ---> list of images
+=> docker image save hello-world -o iks-hello-world.tar ---> save image
+=> 	
+
+
+
+
+ref - https://docs.docker.com/reference/
+
+	- https://docs.docker.com/storage/volumes/
+	
+	- https://docs.docker.com/get-started/
+	
+	- https://learn.microsoft.com/en-us/visualstudio/docker/tutorials/docker-tutorial
+
+==================================================================================================================
+
+wsl	- https://learn.microsoft.com/en-us/windows/wsl/basic-commands#install
+
+:\> wsl --version			- wsl version
+:\> wsl --list --online		- list of valid distro
+:\> wsl --install -d Ubuntu	- install
+:\> wsl --list --verbose	- list of running wsl
+:\> wsl -l -v				-  
+:\> wsl -t DISTRO-NAME		- shut-down distro
+:\> wsl --shutdown			- shut-down all
+:\> wsl ~					- change dir to home
+
+:\> wsl --update
+:\> wsl --version
+
+- wsl --set-version <Distro> <Version>	
+  wsl --set-version kali-linux 2  
+- wsl --set-default-version 2
+	
+==================================================================================================================
+
+$ docker --version			- Version
+$ docker images				- List
+$ docker images -q 			- List only image-id
+$ docker run image-name 	- Download
+$ docker rmi image-id		- Remove
+$ docker inspect image-id	- Image-Info
+$ docker inspect image-name - Image-Info
+
+$ docker ps					- Running Containers
+$ docker ps -a				- All Containers
+$ docker history ImageID 	- 
+$ docker top ContainerID 
+
+$ docker stop ContainerID 	- stop a running container
+$ docker rm ContainerID 	- delete a container
+$ docker stats ContainerID	- statistics of a running container
+$ docker attach ContainerID - attach to a running container
+$ docker pause ContainerID 	- pause the processes in a running container.
+$ docker unpause ContainerID- unpause the processes in a running container.
+$ docker kill ContainerID	- kill the processes in a running container.
+
+$ docker compose version
+
+
+created -> running 	-> killed 
+					-> (pause) Paused 
+							/unpaused <-
+							
+							
+$ docker build  -t ImageName:TagName dir
+  https://learn.microsoft.com/en-us/visualstudio/docker/tutorials/docker-tutorial
+
+$ docker pull/push 
+
+$ docker run -p 8080:8080 -p 50000:50000 jenkins 
+	- data port and control port
+	- host:container port
+	
+==================================================================================================================
+	
+$ docker run -d -p 80:80 docker/getting-started
+$ docker run -dp 80:80 docker/getting-started  	- (combine flags)
+
+	-d Run the container in detached mode, in the background.
+	-p 80:80 Map port 80 of the host to port 80 in the container.
+	docker/getting-started Specifies the image to use.
+	
+	
+=> Docker without docker desktop
+1. Uninstall docker-desktop
+2. Enable WSL. Prefer WSL2
+3. Install Linux Distro
+4. Remove any docker-engine which was installed earlier	
+	- sudo apt-get remove docker docker-engine docker.io containerd runc	
+5. Update and Install (Set up the repository)
+	- sudo apt-get update
+	- sudo apt-get install \
+		ca-certificates \
+		curl \
+		gnupg \
+		lsb-release
+6. https://docs.docker.com/engine/install/ubuntu/
+7. https://www.objectivity.co.uk/blog/how-to-live-without-docker-desktop-developers-perspective/
+
+service docker restart
+service docker status
+	
+	
+	
+
+$ lsb_release -a		- linux version
+
+
+# Stop all the containers  	- docker stop $(docker ps -a -q)
+# Remove all the containers	- docker rm $(docker ps -a -q)
+# Inside running container	- docker exec -it <container-id> /bin/bash
+
+
+sudo apt update
+sudo apt upgrade
+sudo apt-get install --reinstall ca-certificates
+sudo update-ca-certificates
+
+
+
+
+# now it should work perfectly
+git pull
+
+==================================================================================================================
+https://medium.com/@pawelmarcinkiewicz/how-to-use-docker-on-windows-10-without-docker-desktop-548b39738268
+
+https://medium.com/geekculture/run-docker-in-windows-10-11-wsl-without-docker-desktop-a2a7eb90556d
+
+https://dev.solita.fi/2021/12/21/docker-on-wsl2-without-docker-desktop.html
+
+https://nickjanetakis.com/blog/install-docker-in-wsl-2-without-docker-desktop -----------> FINAL..
+
+
+
+# wsl -l -v
+# Install Ubuntu from Microsoft Store
+	name state version
+	ubuntu running 2
+# Create user and pwd for ubuntu
+# Enable Internet connection
+   sudo apt update or, sudo apt-get update 
+  else
+   cd /ect/
+   run sudo nano wsl.conf
+   
+   now paste, 
+	[network]
+	generateResolvConf = false
+	
+		press CTRL + O to save file, and then CTRL + X to exit editor.
+
+		Then run sudo nano resolv.conf
+
+		replace nameserver … with nameserver 8.8.8.8
+
+		press CTRL + O and override the file, then CTRL + X to exit nano editor
+		
+# 5. Run sudo apt update
+6. Install Docker
+
+Run command:
+
+sudo apt install docker.io -y
+
+# Add sudo to Docker
+			   Type command sudo visudo
+
+			Add this on the end of the file (replace username with your username):
+
+			# Docker daemon specification
+			username ALL=(ALL) NOPASSWD: /usr/bin/dockerd
+			
+#  8. Add your user to docker group so you can run Docker as a non-root user
+
+			
+			sudo usermod -aG docker $USER
+			
+			
+# 			9. Check your IP of wsl system
+
+			Install net-tools:
+
+			sudo apt install net-tools
+
+
+# 
+
+==================================================================================================================
+ref - https://hub.docker.com/r/aikain/simplehttpserver/
+
+=> docker-compose (Example - simpleHttpServer)
+
+* With docker-command
+  $ docker run --name my_simplehttpserver -p 8080:80 -v /home/aikain/www:/var/www -d aikain/simplehttpserver:0.1
+  
+  Just change port (8080) and volume (/home/aikain/www) to match your setup.
+
+* You can stop container:
+	$ docker stop my_simplehttpserver
+  And start it again:
+	$ docker start my_simplehttpserver
+  If you want remove container, stop it and then remove:
+	$ docker stop my_simplehttpserver
+	$ docker rm my_simplehttpserver
+
+With docker-compose
+* Make docker-compose.yml-file with content:
+	version: "2"
+	services:
+	  www:
+		image: aikain/simplehttpserver:0.1
+		restart: always
+		ports:
+		  - "8080:80"
+		volumes:
+		  - "/srv/aikain/www:/var/www"
+* Change port (8080) and volume (/home/aikain/www) to match your setup.
+
+* Build and run with docker-compose:
+	$ docker-compose up --build -d
+* Stop/Start/Restart:
+	docker-compose stop
+	docker-compose start
+	docker-compose restart
+* Remove:
+	docker-compose stop
+	docker-compose rm
+
+==================================================================================================================
+
+7281059036
+
+docker logs -f --details docker-php-httpd-1
+
+git config --global http.sslverify false
+
+docker-compose up --build --force-recreate --no-deps -d
+
+docker run –name mariadb_quebit -e MYSQL_ROOT_PASSWORD=thebest1969 -p 3306:3306 -d docker.io/library/mariadb:10.3
+
+docker cp /home/iksingh/mytemp_data/phplicensewatcher/ docker-php-httpd-1:/var/www/html
+
+WIBDOWS --> netstat -ano | findstr 19284
+
+
+

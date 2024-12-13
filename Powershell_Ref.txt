@@ -1,0 +1,13 @@
+PowerShell:	
+---------------------------------------------------------------------------------------------------------------------------
+=> Execution-Policy:
+   -----------------
+   => Get-ExecutionPolicy -List
+   => Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+	  Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope LocalMachine
+	  Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope CurrentUser
+	  Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
+	  Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope Process
+	  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+
+

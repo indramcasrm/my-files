@@ -2,8 +2,154 @@ LINUX
 -----------------------------
 => tail -f filename.log
 
+-rwxrw-r--    10    root   root 2048    Jan 13 07:11 afile.exe
+?UUUGGGOOOS   00  UUUUUU GGGGGG ####    MON DD XX:XX FILENAME
+^ ^  ^  ^ ^    ^      ^      ^    ^      ^            ^- Filename.
+| |  |  | |    |      |      |    |      \-------------- Time of last modification.
+| |  |  | |    |      |      |    \--------------------- File Size OR for directory size of the metadata. (Size is *usually* in bytes on modern systems; See below.)
+| |  |  | |    |      |      \-------------------------- Group Name (for example, Users, Administrators, etc)
+| |  |  | |    |      \--------------------------------- Owner Acct
+| |  |  | |    \---------------------------------------- Link count (what constitutes a "link" here varies)
+| |  |  | \--------------------------------------------- Alternative Access (blank means none defined, anything else varies)
+| \--\--\----------------------------------------------- Read, Write and Special access modes for [U]ser, [G]roup, and [O]thers (everyone else)
+\------------------------------------------------------- File type flag        
 
 
+
+=> 
+	# net-tools(deprecated)	|	ss	|	netstate
+	
+	$ ss -lntu
+	$ netstat -lntu
+	$ netstat -lnptu
+	
+	
+		according to the built-in help:
+
+		-n, --numeric       don't resolve service names
+		-l, --listening     display listening sockets
+		-t, --tcp           display only TCP sockets
+		-u, --udp           display only UDP sockets
+		-p, --processes     show process using socket
+
+		my desc for understanding
+
+		-l = only services which are listening on some port
+		-n = show port number, don't try to resolve the service name
+		-t = tcp ports
+		-u = udp ports
+		-p = name of the program
+		
+	$ netstat -tuwanp 2>/dev/null | awk '{print $4}' | sort | uniq -c | wc -l
+		All opened ports including response traffic:
+	$ netstat -lnt | awk 'NR>2{print $4}' | grep -E '0.0.0.0:' | sed 's/.*://' | sort -n | uniq 		==> Only IPv4
+	$ netstat -lnt | awk 'NR>2{print $4}' | grep -E ':::' | sed 's/.*://' | sort -n | uniq				==> Only IPv6
+	$ netstat -lnt | awk 'NR>2{print $4}' | grep -E '(0.0.0.0:|:::)' | sed 's/.*://' | sort -n | uniq	==> BOTH
+	$ netstat -lnt | awk 'NR>2{print $4}' | grep -E '(127.0.0.1:|::1:)' | sed 's/.*://' | sort -n | uniq
+		 list of port numbers that are listening on all interfaces ...... e.g localhost
+		 
+		 
+	# 0 to 1023: These are the “Well-known” ports, also known as the “System” ports, 
+		which are reserved for system processes that offer a wide variety of network services. 
+		To bind with a “Well-known” port, a process must have superuser privilege.
+	# 1024 to 49151: These are the “Registered” ports, also known as the “User” ports, 
+		that are designated by IANA for specific services. Upon request, a process may have access to them. 
+		In the case of most systems, it doesn’t require any superuser privilege to use these ports.
+	# 49152 to 65535: These are the “Dynamic” ports, also known as the “Private” ports. T
+		hese ports can’t be registered with IANA. These ports are open to using for private or customized 
+		services and may also be automatically allocated as ephemeral ports (short-lived ports used by IP).
+		
+	$ cat /etc/services | less
+	$ netstat -atu					==> a: Tells netstat to show all sockets
+	$ lsof -i						==> The lsof command is to list open files. However, it can also be used for displaying the open ports.
+	$ lsof -i <protocol>			==> lsof -i tcp/udp
+	$ sudo nmap -sT -p- localhost	==> The nmap tool is a powerful one for network exploration and security/port scanning. It can report all the open ports in the system.
+	
+	https://linuxhint.com/how_to_list_open_ports_on_linux/
+	
+
+
+==================================================================================================================
+=> Storage
+	df
+=> find
+	find /where/to/look/up criteria action
+	find /dir/path/look/up criteria action
+	find /dir/path/look/up -name "dir-name-here"
+	find /dir/path/look/up -name "pattern"
+	find /dir/path/look/up -name "dir-name-here" -print
+	find /dir/path/look/up -name "dir-name-here"
+	find / -name "dir-name-here"
+	find / -type d -name "dir-name-here"
+	find / -type d -name "dir-name-here" 2>/dev/null
+
+=> grep
+	cat access_log | grep "10.242.43.4"
+	grep -iRn "TEXT"
+
+	/IBM/CCM-7.0.2_SR1/server/liberty/servers/clm/workarea/org.eclipse.osgi/92/data/temp/default_node/SMF_WebContainer/ccm/ccm/eclipse/workspace/.metadata
+	
+	NEXT+482412@AAD-5CG1513B2S MINGW64 /c/DEVELOPMENT/RTC6061Dev/installs/JazzTeamServer/server/liberty/servers/clm/workarea
+	
+	$ tail -f org.eclipse.osgi/91/data/temp/default_node/SMF_WebContainer/ccm/ccm/eclipse/workspace/.metadata/.log
+
+=> vi editor
+	:set number
+	
+
+=> IP Tables
+
+	/sbin/iptables -A INPUT -p tcp --destination-port {PORT-NUMBER-HERE} -j DROP
+	 
+	### interface section - use eth1 ###
+	/sbin/iptables -A INPUT -i eth1 -p tcp --destination-port {PORT-NUMBER-HERE} -j DROP
+	 
+	### only drop port for given IP or Subnet ##
+	/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port {PORT-NUMBER-HERE} -s {IP-ADDRESS-HERE} -j DROP
+	/sbin/iptables -A INPUT -i eth0 -p tcp --destination-port {PORT-NUMBER-HERE} -s {IP/SUBNET-HERE} -j DROP
+
+
+	# /sbin/iptables -A INPUT -p tcp --destination-port {PORT-NUMBER-HERE} -j DROP
+	
+	###### OUTGOING
+	# To block outgoing port # 25
+	  /sbin/iptables -A OUTPUT -p tcp --dport 25 -j DROP
+	# Block port 1234 for IP address 192.168.1.2 only:
+	  /sbin/iptables -A OUTPUT -p tcp -d 192.168.1.2 --dport 1234 -j DROP
+	  
+	###### INCOMING
+	To block port 80 (HTTP server), enter (or add to your iptables shell script):
+	# /sbin/iptables -A INPUT -p tcp --destination-port 80 -j DROP
+	# /sbin/service iptables save
+	
+	Block Incoming Port 80 except for IP Address 1.2.3.4
+	# /sbin/iptables -A INPUT -p tcp -i eth1 ! -s 1.2.3.4 --dport 80 -j DROP
+	
+	
+	######## VIEW
+	# /sbin/iptables -L -n -v
+	# /sbin/iptables -L -n -v | grep port
+	# /sbin/iptables -L -n -v | grep -i DROP
+	# /sbin/iptables -L OUTPUT -n -v
+	# /sbin/iptables -L INPUT -n -v
+	
+	
+tree command
+[root@srsdc307486l220 Unite]# tree -d -L 2
+.
+├── Install
+│   └── unite-setup
+├── Unite-2.0.2.2-Backup-2024_09_08
+│   └── unite.war
+└── unite-release-2.0.2.2-I20220802130435
+    ├── db-script
+    └── doc
+
+
+RHEL Version => cat /etc/redhat-release
+yum search tree
+yum install tree
+kernal version - uname -r | uname -mrs
 
 
 
